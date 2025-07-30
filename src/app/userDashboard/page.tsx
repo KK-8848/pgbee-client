@@ -10,6 +10,7 @@ import Footer from "./footer/page";
 import BottomNav from "@/components/BottomNav";
 import { useMediaQuery } from 'react-responsive';
 import ProtectedRoute from "@/components/ProtectedRoute";
+import ProfileRequiredRoute from "@/components/ProfileRequiredRoute";
 
 interface SuggestionItem {
     text: string;
@@ -126,7 +127,8 @@ export default function DashBoard() {
 
     return (
         <ProtectedRoute>
-            <div className="flex flex-col min-h-screen bg-white">
+            <ProfileRequiredRoute>
+                <div className="flex flex-col min-h-screen bg-white">
                 
                 {/* --- NAVIGATION --- */}
             {/* Conditionally render based on the hook's return value */}
@@ -231,6 +233,7 @@ export default function DashBoard() {
             {/* --- MOBILE BOTTOM NAVIGATION --- */}
             {isMobile && <BottomNav />}
             </div>
+            </ProfileRequiredRoute>
         </ProtectedRoute>
     );
 }

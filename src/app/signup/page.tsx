@@ -42,6 +42,7 @@ export default function SignupPage() {
       return;
     }
 
+
     try {
       await fetchDetails();
     } catch (error) {
@@ -57,44 +58,21 @@ export default function SignupPage() {
     }
   }, [email]);
 
+
+
   const role = "student";
 
-  // MOCK SIGNUP - REPLACE WITH REAL API CALL WHEN BACKEND IS READY
   const fetchDetails = async () => {
+    // REAL BACKEND CALL:
     try {
-      setShowModal(true);
-
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Mock success
-      console.log('🚨 MOCK: Signup successful for:', {
-        name: `${firstName} ${lastName}`,
-        email,
-        role
-      });
-
-      // Clear fields
-      setFirstName("");
-      setLastName("");
-      setEmail("");
-      setPassword("");
-      setAgreeTerms(false);
-
-      alert("Account created successfully! Please login with your credentials.\n\nDemo credentials available:\n• demo@pgbee.com / demo123\n• john@example.com / password123");
-
-      setShowModal(false);
-      router.push("/login");
-
-      /* REAL BACKEND CALL:
-      const response = await axios.post("https://server.pgbee.in/auth/signup", {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://192.168.1.73:8080"}/auth/signup`, {
         name: `${firstName} ${lastName}`,
         email,
         password,
         role
       });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         setShowModal(true);
         setFirstName("");
         setLastName("");
@@ -105,13 +83,17 @@ export default function SignupPage() {
       } else {
         alert("Signup failed. Please try again.");
       }
-      */
-
     } catch (error) {
       console.error("Error fetching details:", error);
       alert("Something went wrong. Please try again.");
       setShowModal(false);
     }
+  };
+  
+  const handleGoogleSignup = () => {
+    // Redirect to backend Google OAuth endpoint
+    const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://192.168.1.73:8080";
+    window.location.href = `${baseURL}/auth/google`;
   };
 
   return (
@@ -135,7 +117,7 @@ export default function SignupPage() {
         </div>
 
         {/* Google Sign Up */}
-        <button className="w-full flex items-center justify-center gap-2 border border-gray-400 py-2 rounded-xl mb-6 hover:bg-gray-100">
+        <button onClick={handleGoogleSignup} className="w-full flex items-center justify-center gap-2 border border-gray-400 py-2 rounded-xl mb-6 hover:bg-gray-100">
           <FcGoogle size={24} />
           Sign up with Google
         </button>
@@ -224,8 +206,8 @@ export default function SignupPage() {
           />
           <p className="text-gray-700">
             By creating an account, I agree to the{" "}
-            <a href="#" className="text-blue-600 underline">Terms of use</a> and{" "}
-            <a href="#" className="text-blue-600 underline">Privacy Policy</a>.
+             <a href="/terms" className="text-blue-600 underline">Terms of use</a> and{" "}
+            <a href="/privacy" className="text-blue-600 underline">Privacy Policy</a>. 
           </p>
         </div>
 

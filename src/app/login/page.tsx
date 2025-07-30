@@ -22,6 +22,12 @@ export default function LoginPage() {
     return regex.test(email);
   };
 
+  const handleGoogleLogin = () => {
+    // Redirect to backend Google OAuth endpoint  
+    const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://192.168.1.73:8080";
+    window.location.href = `${baseURL}/auth/google`;
+  };
+
   const handleLogin = async () => {
     let valid = true;
 
@@ -92,7 +98,10 @@ export default function LoginPage() {
           <button className="w-1/2 py-2 bg-black text-white font-medium">Log in</button>
         </div>
 
-        <button className="w-full flex items-center justify-center gap-2 border border-gray-400 py-2 rounded-xl mb-6 hover:bg-gray-100">
+        <button 
+          onClick={handleGoogleLogin} 
+          className="w-full flex items-center justify-center gap-2 border border-gray-400 py-2 rounded-xl mb-6 hover:bg-gray-100"
+        >
           <FcGoogle size={24} />
           Log In with Google
         </button>
