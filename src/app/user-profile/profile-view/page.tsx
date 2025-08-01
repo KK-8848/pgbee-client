@@ -3,8 +3,8 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { KeyboardArrowLeft } from '@mui/icons-material';
-import Sidebar1 from '../../../components/Sidebar1';
-import BottomNav from '../../../components/BottomNav';
+import Sidebar1 from '../../../components/layout/Sidebar';
+import BottomNav from '../../../components/layout/BottomNav';
 
 const Image1 = '/PgBee.png';
 const Image2 = '/Person.png';
@@ -13,7 +13,7 @@ const Image2 = '/Person.png';
 function MobileProfileView() {
     const router = useRouter();
     const pushroute = () => {
-        router.push('/userProfile/profileEdit');
+        router.push('/userProfile/profile-edit');
     }
 
     return (
@@ -112,7 +112,7 @@ function DesktopProfileView() {
                     </div>
                 </div>
                 <div className="flex justify-end mt-8">
-                    <button onClick={() => router.push('/userProfile/profileEdit')} className='bg-black text-white px-6 py-2 rounded-lg font-semibold hover:bg-gray-800'>Edit Profile</button>
+                    <button onClick={() => router.push('/user-profile/profile-edit')} className='bg-black text-white px-6 py-2 rounded-lg font-semibold hover:bg-gray-800'>Edit Profile</button>
                 </div>
             </div>
         </div>

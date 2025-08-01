@@ -6,7 +6,7 @@ import house1 from '../../../../public/Image (21).png';
 import house2 from '../../../../public/Image (22).png';
 import house3 from '../../../../public/Image (23).png';
 import house4 from '../../../../public/Image (24).png';
-import Modal from '../[details]/modal'
+import Modal from '../[id]/modal'
 import Wishlists from './[wishlist]/page'
 
 

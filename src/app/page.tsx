@@ -1,4 +1,4 @@
-import Landing from "./userDashboard/page";
+import Landing from "./dashboard/page";
 
 export default function Home() {
   return (

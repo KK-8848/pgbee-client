@@ -1,15 +1,15 @@
 "use client";
 
-import LandingPage from "@/components/LandingPage";
-import Sidebar, { FilterState } from "@/components/Sidebar";
+import LandingPage from "@/components/hostel/HostelList";
+import Sidebar, { FilterState } from "@/components/hostel/HostelFilter";
 import { useState, useEffect } from "react";
 import Image from 'next/image';
 import { FilterList, LocationOn, Search } from "@mui/icons-material";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/layout/Navbar";
 import Footer from "./footer/page";
-import BottomNav from "@/components/BottomNav";
+import BottomNav from "@/components/layout/BottomNav";
 import { useMediaQuery } from 'react-responsive';
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/guards/ProtectedRoute";
 
 interface SuggestionItem {
     text: string;

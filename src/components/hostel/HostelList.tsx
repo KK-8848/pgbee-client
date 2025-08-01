@@ -3,7 +3,7 @@
 import { CheckCircleOutline, Favorite, FavoriteBorder } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
-import { FilterState } from "./Sidebar";
+import { FilterState } from "./hostel/HostelFilter";
 import Image from "next/image";
 
 interface LandingPageProps {
@@ -39,7 +39,7 @@ export default function LandingPage({ searchQuery = '', filters }: LandingPagePr
         bathroomAttached: boolean;
     }
 
-    const pgs: PgData[] = [
+    const pg: PgData[] = [
   {
     id: 11,
     name: "Durbar Gents hostel 2",
@@ -257,8 +257,8 @@ export default function LandingPage({ searchQuery = '', filters }: LandingPagePr
     // ====================================================================
 
     // Apply filters and search
-    const getFilteredAndSortedPgs = () => {
-        let filtered = [...pgs];
+    const getFilteredAndSortedpg = () => {
+        let filtered = [...pg];
 
         // Apply search query filter
         if (searchQuery.trim()) {
@@ -356,15 +356,15 @@ export default function LandingPage({ searchQuery = '', filters }: LandingPagePr
         return filtered;
     };
 
-    const filteredPgs = getFilteredAndSortedPgs();
+    const filteredpg = getFilteredAndSortedpg();
 
     // ====================================================================
     // 🎨 UI STATE AND HELPERS
     // ====================================================================
     
-    const [likedPgs, setLikedPgs] = useState<boolean[]>(filteredPgs.map(() => false));
+    const [likedpg, setLikedpg] = useState<boolean[]>(filteredpg.map(() => false));
     const toggleLike = (index: number) => {
-        setLikedPgs((prev) => {
+        setLikedpg((prev) => {
             const newLikes = [...prev];
             newLikes[index] = !newLikes[index];
             return newLikes;
@@ -390,9 +390,17 @@ export default function LandingPage({ searchQuery = '', filters }: LandingPagePr
     const router = useRouter();
 
     // Navigate to detail page with the selected PG id
-const handleViewDetails = (id: number) => {
-  router.push(`/userDashboard/${id}`);
-};
+    const handleViewDetails = (id: number) => {
+        router.push(`/dashboard/${id}`);
+    };
+
+    // Helper function to format image paths safely
+    const formatImagePath = (path: string | undefined) => {
+        if (!path) {
+            return '/placeholder.jpg'; // Fallback for undefined or null paths
+        }
+        return path.startsWith('/') ? path : `/${path}`;
+    };
 
     return (
         <div className="w-full lg:basis-4/5">
@@ -403,7 +411,7 @@ const handleViewDetails = (id: number) => {
                         {searchQuery ? `Search results for "${searchQuery}"` : 'Hostels in College Of Engineering,Trivandrum'}
                     </span>
                 </div>
-                <span>({filteredPgs.length} search results)</span>
+                <span>({filteredpg.length} search results)</span>
                 {/* TODO: Sort dropdown - COMMENTED OUT FOR NOW */}
                 {/*
                 <span className="ml-[170px] mr-[15px] font-semibold hidden sm:block ">Sort By:</span>
@@ -418,13 +426,13 @@ const handleViewDetails = (id: number) => {
             </div>
 
             {/* landing page */}
-            {filteredPgs.length === 0 ? (
+            {filteredpg.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16">
-                    <p className="text-xl text-gray-500 mb-2">No PGs found</p>
+                    <p className="text-xl text-gray-500 mb-2">No pg found</p>
                     <p className="text-gray-400">Try adjusting your search criteria</p>
                 </div>
             ) : (
-                filteredPgs.map((pg, i) => {
+                filteredpg.map((pg, i) => {
                 const maxDisplay = 4;
                 const remainingCount = pg.images.length - maxDisplay;
 
@@ -433,12 +441,11 @@ const handleViewDetails = (id: number) => {
                         {/* Main image */}
                         <div className="relative w-[220px] lg:w-[400px] h-[170px] lg:h-[260px] rounded-2xl overflow-hidden flex-shrink-0">
                             <Image
-                                key={pg.id}
                                 width={400}
                                 height={260}
-                                src={pg.images[0]}
+                                src={formatImagePath(pg.images?.[0])}
                                 alt={pg.name}
-                                className="block w-full h-full object-cover rounded-2xl"
+                                className="block w-full h-full object-cover rounded-2xl bg-gray-200"
                             />
 
                             {/* Heart icon: top-right on mobile, hidden on larger screens */}
@@ -446,7 +453,7 @@ const handleViewDetails = (id: number) => {
                                 onClick={() => toggleLike(pg.id)}
                                 className="absolute top-2 right-2 sm:hidden text-gray-500 bg-white border border-gray-300 rounded-full p-2 w-[30px] h-[30px] flex items-center justify-center"
                             >
-                                {likedPgs[pg.id] ? <Favorite className="text-red-500" /> : <FavoriteBorder />}
+                                {likedpg[pg.id] ? <Favorite className="text-red-500" /> : <FavoriteBorder />}
                             </div>
                         </div>
 
@@ -457,7 +464,7 @@ const handleViewDetails = (id: number) => {
                                 height={60}
                                     width={100}
                                     key={idx}
-                                    src={img}
+                                    src={formatImagePath(img)}
                                     alt={`img-${idx}`}
                                     className="rounded-xl w-20 h-12 mt-[4px] object-cover"
                                 />
@@ -468,7 +475,7 @@ const handleViewDetails = (id: number) => {
                                     <Image
                                         height={60}
                                         width={100}
-                                        src={pg.images[maxDisplay]}
+                                        src={formatImagePath(pg.images[maxDisplay])}
                                         alt="more"
                                         className="w-full h-full object-cover mt-[4px] opacity-70"
                                     />
@@ -525,7 +532,7 @@ const handleViewDetails = (id: number) => {
                                     className="mt-4 ml-[150px] text-gray-500 border border-gray-300 rounded-full p-2 w-[36px] h-[36px] flex items-center justify-center cursor-pointer hidden sm:flex"
                                     onClick={() => toggleLike(i)}
                                 >
-                                    {likedPgs[i] ? <Favorite className="text-red-500" /> : <FavoriteBorder />}
+                                    {likedpg[i] ? <Favorite className="text-red-500" /> : <FavoriteBorder />}
                                 </div>
                             </div>
                         </div>

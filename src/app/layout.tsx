@@ -1,7 +1,14 @@
+
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
+
+import { use } from "react";
+
+import axios from "@/lib/axios"; // Importing the axios instance
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +37,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+ 
   return (
     // Add suppressHydrationWarning here
     <html lang="en" suppressHydrationWarning>
@@ -38,7 +46,8 @@ export default function RootLayout({
         style={{ fontFamily: "var(--font-poppins)" }}
         suppressHydrationWarning
       >
-        <AuthProvider>
+   <AuthProvider>
+         
           {children}
         </AuthProvider>
       </body>

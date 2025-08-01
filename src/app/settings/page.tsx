@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Image1 from './../../../public/PgBee.png';
 import { ToggleOn, ToggleOff } from '@mui/icons-material';
 import { useState } from 'react';
-import BottomNav from '../../components/BottomNav';
+import BottomNav from '../../components/layout/BottomNav';
 import { useRouter } from 'next/navigation';
 export default function SettingsPage() {
     const options = [

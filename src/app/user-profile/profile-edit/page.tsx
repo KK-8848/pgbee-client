@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Edit, KeyboardArrowLeft } from '@mui/icons-material';
 import { useState, useRef, ChangeEvent, RefObject } from 'react';
-import Sidebar1 from '../../../components/Sidebar1';
-import BottomNav from '../../../components/BottomNav';
+import Sidebar1 from '../../../components/layout/Sidebar';
+import BottomNav from '../../../components/layout/BottomNav';
 
 // Constants
 const Image1 = '/PgBee.png';
@@ -209,7 +209,7 @@ export default function ProfileEditPage() {
 
     const handleSave = () => {
         console.log('Saving Form Data:', formData);
-        router.push('/userProfile/profileView');
+        router.push('/user-profile/profile-view');
     };
 
     const props = {

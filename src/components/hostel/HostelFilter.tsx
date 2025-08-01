@@ -16,8 +16,8 @@ export interface FilterState {
   amenitySearch: string;
   priceRange: number[];
   placeType: 'Hostel' | 'PG';
-  rooms: string;
-  bathrooms: string;
+  rooms: number | 'Any';
+  bathrooms: number | 'Any';
   curfew: 'mandatory' | 'none' | 'any';
   roomType: string[];
   bathroomAttached: 'attached' | 'not-attached' | 'any';
@@ -32,6 +32,7 @@ export default function Sidebar({ setToggle, onFiltersChange }: SidebarProps) {
     const [filteredAmenities, setFilteredAmenities] = useState(allAmenities);
     const [showAllAmenities, setShowAllAmenities] = useState(false);
     const rooms = ["Any", "1", "2", "3", "4"];
+    const bathrooms = ["Any", "1", "2", "3", "4"];
     const MIN = 1000;
     const MAX = 18000;
     const STEP = 1000;
@@ -42,7 +43,7 @@ export default function Sidebar({ setToggle, onFiltersChange }: SidebarProps) {
         amenities: [],
         amenitySearch: '',
         priceRange: [MIN, MAX],
-        placeType: 'Hostel',
+        placeType: 'PG',
         rooms: 'Any',
         bathrooms: 'Any',
         curfew: 'any',
@@ -110,7 +111,11 @@ export default function Sidebar({ setToggle, onFiltersChange }: SidebarProps) {
             cautionDeposit: 'any'
         });
     };
-    
+       const handleRoomOrBathroomChange = (key: 'rooms' | 'bathrooms', value: string) => {
+        // Convert the string value to a number, unless it's "Any"
+        const numericValue = value === 'Any' ? 'Any' : parseInt(value, 10);
+        updateFilter(key, numericValue);
+    };
     
     return (
         <div className="flex-1">
@@ -186,36 +191,31 @@ export default function Sidebar({ setToggle, onFiltersChange }: SidebarProps) {
                     <span className="font-bold text-[22px] mb-[10px] ">Price</span>
                     {/* Slider */}
                     <Range
-                        step={STEP}
-                        min={MIN}
-                        max={MAX}
+                        step={100}
+                        min={0}
+                        max={20000}
                         values={filters.priceRange}
-                        onChange={(values) => updateFilter('priceRange', values)}
+                        onChange={(values) => setFilters(prev=> ({
+                            ...prev,
+                            priceRange: values
+                        }))}
                         renderTrack={({ props, children }) => (
-                            <div
-                                {...props}
-                                className="h-1 w-full bg-gray-200 rounded relative"
-                                style={{ ...props.style }}
-                            >
-                                <div
-                                    className="absolute h-1 bg-black rounded"
-                                    style={{
-                                        left: `${((filters.priceRange[0] - MIN) / (MAX - MIN)) * 100}%`,
-                                        width: `${((filters.priceRange[1] - filters.priceRange[0]) / (MAX - MIN)) * 100}%`,
-                                    }}
-                                />
+                            <div {...props} className="h-1 w-full bg-gray-300 rounded-full">
                                 {children}
                             </div>
                         )}
-                        renderThumb={({ props }) => (
-                            <div
-                                {...props}
-                                className="h-5 w-5 bg-white border-2 border-black rounded-full shadow"
-                            />
-                        )}
+                        renderThumb={({ props }) => {
+                            const { key, ...restProps } = props;
+                            return (
+                                <div
+                                    key={key}
+                                    {...restProps}
+                                    className="h-5 w-5 bg-white border-2 border-black rounded-full shadow focus:outline-none"
+                                />
+                            );
+                        }}
                     />
-
-                    <div className="flex justify-between mt-2 text-sm font-semibold">
+                    <div className="flex justify-between text-sm text-gray-600 mt-2">
                         <span className="bg-gray-100 px-2 py-1 rounded">₹{filters.priceRange[0]}</span>
                         <span className="bg-gray-100 px-2 py-1 rounded">₹{filters.priceRange[1]}</span>
                     </div>
@@ -257,9 +257,9 @@ export default function Sidebar({ setToggle, onFiltersChange }: SidebarProps) {
                         <div className="flex flex-row gap-2 flex-wrap mt-[20px] ">
                             {rooms.map((room, index) => (
                                 <div 
-                                    onClick={() => updateFilter('rooms', room)} 
+                                    onClick={() => handleRoomOrBathroomChange('rooms', room)} 
                                     key={index} 
-                                    className={`${filters.rooms === room ? "bg-black text-white" : "hover:bg-gray-100"} flex flex-row items-center border justify-center cursor-pointer rounded-xl gap-2 w-[50px] p-[6px] transition-colors`}
+                                    className={`${filters.rooms == room ? "bg-black text-white" : "hover:bg-gray-100"} flex flex-row items-center border justify-center cursor-pointer rounded-xl gap-2 w-[50px] p-[6px] transition-colors`}
                                 >
                                     <span className={`text-[15px] font-semibold `}>{room} </span>
                                 </div>
@@ -268,13 +268,13 @@ export default function Sidebar({ setToggle, onFiltersChange }: SidebarProps) {
 
                         <span className="mt-[20px] font-bold text-[20px] ">BathRooms</span>
                         <div className="flex flex-row gap-2 flex-wrap mt-[20px] ">
-                            {rooms.map((room, index) => (
+                            {bathrooms.map((bathroom, index) => (
                                 <div 
-                                    onClick={() => updateFilter('bathrooms', room)} 
+                                    onClick={() => handleRoomOrBathroomChange('bathrooms', bathroom)} 
                                     key={index} 
-                                    className={`${filters.bathrooms === room ? "bg-black text-white" : "hover:bg-gray-100"} flex flex-row items-center border justify-center cursor-pointer rounded-xl gap-2 w-[50px] p-[6px] transition-colors`}
+                                    className={`${filters.bathrooms == bathroom ? "bg-black text-white" : "hover:bg-gray-100"} flex flex-row items-center border justify-center cursor-pointer rounded-xl gap-2 w-[50px] p-[6px] transition-colors`}
                                 >
-                                    <span className={`text-[15px] font-semibold `}>{room} </span>
+                                    <span className={`text-[15px] font-semibold `}>{bathroom} </span>
                                 </div>
                             ))}
                         </div>

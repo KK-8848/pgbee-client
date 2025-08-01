@@ -3,9 +3,9 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Description, DoorBack, HelpOutline, KeyboardArrowRight, LockPerson, Person2, Settings } from '@mui/icons-material';
-import Sidebar1 from '../../components/Sidebar1';
-import BottomNav from '../../components/BottomNav';
-import ProtectedRoute from "@/components/ProtectedRoute";
+import Sidebar1 from '../../components/layout/Sidebar';
+import BottomNav from '../../components/layout/BottomNav';
+import ProtectedRoute from "@/components/guards/ProtectedRoute";
 
 // Reusable menu item component for the desktop view
 type ProfileMenuItemProps = {

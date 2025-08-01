@@ -4,9 +4,9 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { LocationOn, Search, Menu as MenuIcon, Close as CloseIcon } from "@mui/icons-material";
-import Modal from '../app/userDashboard/[details]/modal'
-import Wishlist from '../app/userDashboard/wishlists/page';
-import Sidebar1 from './Sidebar1';
+import Modal from '../../app/dashboard/[id]/modal'
+import Wishlist from '../../app/dashboard/wishlists/page';
+import Sidebar1 from './Sidebar';
 import { useAuth } from "@/contexts/AuthContext";
 
 interface NavbarProps {
